@@ -74,7 +74,7 @@ ICS.Engine = {
     const erholung = /nachmittag|nichts (zu )?tun|pause|ausruh|erhol|frei(e|en|er)? zeit/.test(n);
     const produktivitaetsGewissen = /schlechtes gewissen|zeit verschwende|unproduktiv|nicht produktiv/.test(n);
     const druckImVerlauf = /druck|leisten|erfolg|ziele|zufrieden|beweisen|geschafft/.test(verlauf);
-    if (erholung && produktivitaetsGewissen && druckImVerlauf) {
+    if (erholung && produktivitaetsGewissen) {
       return "Du möchtest dir einen freien Nachmittag gönnen. Gleichzeitig meldet sich der Gedanke, dass du diese Zeit sinnvoller nutzen müsstest.<br><br>" +
         "Vielleicht geht es gerade darum, ob Erholung für dich genauso selbstverständlich sein darf wie Leistung.<br><br>" +
         "<strong>Was würde dir helfen, diesen Nachmittag bewusst zu genießen, ohne ihn rechtfertigen zu müssen?</strong>";

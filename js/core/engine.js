@@ -77,6 +77,12 @@ ICS.Engine = {
     const erfolgsangst = /angst.{0,65}(nicht erfolgreich|zu versagen)|nicht erfolgreich genug|nie genug (zu tun|tun)|nicht genug (zu tun|tun)/.test(n);
     const erfolgSchonGenannt = /nicht erfolgreich genug|angst.{0,65}(nicht erfolgreich|zu versagen)/.test(vorher);
     const erfolgsMassstab = /erfolg|erfolgreich|ziele|erreichen/.test(verlauf);
+    const zufriedenheit = /zufrieden|leben genießen|leben geniessen|beweisen müssen|beweisen muessen/.test(n);
+    const zielUndFreiheit = /ziele|erfolg|erfolgreich|freiheit|selbstbestimm/.test(verlauf);
+    if (zufriedenheit && zielUndFreiheit) {
+      return "Du beschreibst Erfolg nicht nur als etwas, das du erreichst, sondern auch als ein Gefühl von Zufriedenheit und innerer Freiheit. Du möchtest deine Ziele weiterverfolgen, ohne ständig etwas beweisen zu müssen.<br><br>" +
+        "<strong>Was könntest du dir heute erlauben, auch wenn noch nicht alles geschafft ist?</strong>";
+    }
     const erfolgsDefinition = /finanziell frei|finanzielle freiheit|eigene ideen|ideen verwirklichen|zeit für mich|zeit fuer mich|selbstbestimm/.test(n);
     const erfolgsKontext = /erfolgreich|erfolg|ziele|leistungsdruck|druck|alles schaffen/.test(verlauf);
     if (erfolgsDefinition && erfolgsKontext) {

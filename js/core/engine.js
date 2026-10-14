@@ -19,6 +19,13 @@ ICS.Engine = {
       return { html: kontextAntwort, analyse: analyse };
     }
 
+    // Gesprächsarchitektur: Nach der ersten Nachricht wird nicht auf
+    // isolierte Schlüsselwort-Kategorien zurückgesetzt.
+    const dialogFortsetzung = this.gespraechsFortsetzung(text, gespraech, analyse);
+    if (dialogFortsetzung) {
+      return { html: dialogFortsetzung, analyse: analyse };
+    }
+
     if (analyse.einstieg) {
       return {
         html: this.einstiegsAntwort(analyse.einstieg),
@@ -61,6 +68,55 @@ ICS.Engine = {
     };
   },
 
+
+  gespraechsFortsetzung(text, gespraech, analyse) {
+    const antworten = Array.isArray(gespraech && gespraech.antworten)
+      ? gespraech.antworten : [];
+    if (antworten.length < 2) return "";
+
+    const n = String(text || "").toLowerCase();
+    const bisher = antworten.slice(0, -1).join(" ").toLowerCase();
+    const esc = (wert) => this.escapen(wert);
+    const themaErfolg = /erfolg|ziel|leist|druck|frei|zufrieden|schaffen|beweis/.test(bisher);
+    const wunsch = /ich (möchte|will|wünsche|würde gern)|für mich|mir wäre wichtig|ich könnte/.test(n);
+    const hindernis = /aber|schwer|fällt mir|angst|sorge|trotzdem|schlechtes gewissen|nicht/.test(n);
+    const handlung = /heute|morgen|anfangen|ausprobieren|erlauben|nachmittag|schritt|konkret/.test(n);
+    const bereitsGefragt = Array.isArray(gespraech.dialogFragen) ? gespraech.dialogFragen : [];
+    const fragen = [];
+
+    // Neue Aussagen erst spiegeln, dann mit EINER Anschlussfrage weitergehen.
+    if (wunsch && hindernis) {
+      fragen.push("Du benennst etwas, das du dir wünschst, und gleichzeitig etwas, das dich noch zurückhält.");
+      fragen.push("Was wäre ein kleiner, machbarer Schritt, der deinem Wunsch heute Raum gibt?");
+    } else if (handlung) {
+      fragen.push("Du denkst bereits darüber nach, wie du etwas verändern könntest.");
+      fragen.push("Welchen kleinen Schritt möchtest du als Erstes ausprobieren?");
+    } else if (themaErfolg) {
+      fragen.push("Ich behalte im Blick, dass es dir um deine eigenen Ziele und zugleich um mehr Freiraum geht.");
+      fragen.push("Was ist dir an deiner letzten Aussage besonders wichtig?");
+    } else if (analyse && analyse.emotion) {
+      fragen.push("Das scheint dich gerade zu beschäftigen.");
+      fragen.push("Was würde dir im Moment helfen, damit umzugehen?");
+    } else {
+      // Kein Neustart und keine erfundene Deutung, auch bei unbekanntem Thema.
+      fragen.push("Ich möchte bei dem bleiben, was du gerade beschrieben hast.");
+      fragen.push("Was davon möchtest du als Nächstes genauer anschauen?");
+    }
+
+    let frage = fragen[1];
+    if (bereitsGefragt.includes(frage)) {
+      const alternativen = [
+        "Was wäre für dich jetzt eine hilfreiche nächste Entscheidung?",
+        "Woran würdest du merken, dass sich etwas in die richtige Richtung bewegt?",
+        "Möchtest du eher weiter darüber sprechen oder einen konkreten Schritt entwickeln?"
+      ];
+      frage = alternativen.find((f) => !bereitsGefragt.includes(f)) ||
+        "Welcher Teil davon ist für dich gerade neu oder anders?";
+    }
+    gespraech.dialogFragen = bereitsGefragt.concat(frage).slice(-12);
+    gespraech.dialogPhase = handlung ? "handlung" : (wunsch ? "klaerung" : "vertiefung");
+    return esc(fragen[0]) + "<br><br><strong>" + esc(frage) + "</strong>";
+  },
 
   kontextAntwort(text, gespraech) {
     const n = String(text || "").toLowerCase();

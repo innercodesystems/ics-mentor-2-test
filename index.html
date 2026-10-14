@@ -1,12 +1,105 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ICS Mentor 2.0 – Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICS Digital Mentor – Testumgebung</title>
+  <link rel="stylesheet" href="css/mentor.css?v=17">
 </head>
 <body>
-<h1>INNER CODE SYSTEMS</h1>
-<p>ICS Mentor 2.0 – Testumgebung</p>
+  <main class="mentor-page">
+    <header class="mentor-header">
+      <div class="mentor-logo">🧠</div>
+      <p class="mentor-label">INNER CODE SYSTEMS</p>
+      <h1>ICS Digital Mentor</h1>
+      <p class="mentor-intro">Mehr als Antworten. Ein Gespräch für Klarheit, Selbstwahrnehmung und deinen nächsten bewussten Schritt.</p>
+    </header>
+
+    <section class="ics-memory-settings" id="ics-memory-settings" aria-labelledby="ics-memory-title">
+      <h2 id="ics-memory-title">Deine Erinnerungen</h2>
+      <p>Du entscheidest, ob der Mentor Erkenntnisse dauerhaft in diesem Browser merkt. Ohne Zustimmung kannst du ganz normal mit ihm sprechen.</p>
+      <label class="ics-memory-choice"><input id="ics-memory-insights" type="checkbox"> Wichtige Erkenntnisse, Muster und Themen merken</label>
+      <label class="ics-memory-choice"><input type="checkbox" disabled> Frühere vollständige Gesprächsverläufe speichern <small>(folgt später, derzeit nicht verfügbar)</small></label>
+      <p class="ics-memory-hint">Wenn du zustimmst, können bereits vorhandene lokale Mentor-Erinnerungen wieder verwendet werden. „Gespräch neu starten“ löscht diese nicht.</p>
+      <div class="ics-memory-actions">
+        <button id="ics-memory-save" type="button">Auswahl speichern</button>
+        <button id="ics-memory-revoke" type="button">Einwilligung widerrufen</button>
+        <button id="ics-memory-delete" type="button">Lokale Erinnerungen löschen</button>
+      </div>
+      <p id="ics-memory-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="mentor-card">
+      <div class="mentor-status">
+        <span class="mentor-dot"></span>
+        <span>ICS Brain V10 ist bereit</span>
+        <button id="ics-profile" class="reset-button" type="button">Mein ICS Profil</button>
+        <button id="ics-reset" class="reset-button" type="button">Gespräch neu starten</button>
+      </div>
+
+      <div id="ics-messages" class="mentor-chat" aria-live="polite">
+        <div class="chat-row mentor-row">
+          <div class="chat-avatar">🧠</div>
+          <div class="chat-bubble mentor-bubble">
+<p>
+<strong>Willkommen.</strong><br><br>
+Schön, dass du hier bist.<br>
+Beschreibe einfach deine Situation in deinen eigenen Worten.<br>
+Es geht nicht um perfekte Antworten.<br>
+Sondern darum, dich besser zu verstehen.
+</p>     
+          </div>
+        </div>
+      </div>
+
+      <div id="ics-typing" class="typing-indicator" hidden>
+        <span></span><span></span><span></span> ICS Mentor denkt …
+      </div>
+
+      <div class="mentor-input-area">
+        <label class="input-label" for="ics-input">Deine Nachricht</label>
+        <textarea id="ics-input" rows="3" maxlength="1500" placeholder="Schreibe hier, was dich gerade beschäftigt …"></textarea>
+        <div class="input-footer">
+          <span id="ics-counter">0 / 1500</span>
+          <button id="ics-send" class="send-button" type="button">Nachricht senden</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="mentor-note">
+      Der ICS Digital Mentor unterstützt dich bei Selbstreflexion und persönlicher Klarheit.
+      Er ersetzt keine medizinische, psychologische oder therapeutische Beratung.
+    </p>
+  </main>
+
+<script src="js/consent.js?v=1"></script>
+<script src="js/utils.js?v=10"></script>
+<script src="js/smalltalk.js?v=10"></script>
+<script src="js/emotionen.js?v=10"></script>
+<script src="js/themen.js?v=10"></script>
+<script src="js/muster.js?v=22"></script>
+<script src="js/spiegel.js?v=1"></script>
+<script src="js/verknuepfungen.js?v=3"></script>
+<script src="js/beduerfnisse.js?v=1"></script>
+<script src="js/glaubenssaetze.js?v=1"></script>
+<script src="js/innercode.js?v=2"></script>
+<script src="js/bodycode.js?v=1"></script>
+<script src="js/actioncode.js?v=1"></script>
+<script src="js/intelligenz.js?v=1"></script>
+<script src="js/schlussfolgerungen.js?v=1"></script>
+<script src="js/analysebericht.js?v=1"></script>
+<script src="js/profil.js?v=10"></script>
+<script src="js/auswertung.js?v=10"></script>
+
+<script src="js/brain.js?v=10"></script>
+<script src="js/hypothesen.js?v=2"></script>
+<script src="js/graph.js?v=1"></script>
+<script src="js/prioritaeten.js?v=1"></script>
+<script src="js/core/core.js?v=1"></script>
+<script src="js/core/analyse.js?v=4"></script>
+<script src="js/core/engine.js?v=1"></script>
+<script src="js/mentor.js?v=41"></script>
+<script src="js/consent-ui.js?v=1"></script>
+  
 </body>
 </html>

@@ -14,6 +14,11 @@ ICS.Engine = {
     const analyse =
       ICS.Analysieren(text, gespraech);
 
+    const kontextAntwort = this.kontextAntwort(text, gespraech);
+    if (kontextAntwort) {
+      return { html: kontextAntwort, analyse: analyse };
+    }
+
     if (analyse.einstieg) {
       return {
         html: this.einstiegsAntwort(analyse.einstieg),
@@ -56,6 +61,36 @@ ICS.Engine = {
     };
   },
 
+
+  kontextAntwort(text, gespraech) {
+    const n = String(text || "").toLowerCase();
+    const bisher = Array.isArray(gespraech && gespraech.antworten)
+      ? gespraech.antworten.length : 0;
+
+    // Nur auf tatsächlich geäußerte Inhalte eingehen, keine Diagnose behaupten.
+    const nichtGutGenug = /nicht gut genug|nicht genug (sein|bin)|andere (zu )?enttäusch/.test(n);
+    const leistungsdruck = /druck|funktionieren|alles schaffen|leisten/.test(n);
+    const leichtigkeit = /leichtigkeit|ruhe|entlastung/.test(n);
+    const vieleZiele = /viele ideen|große ziele|wo ich anfangen/.test(n);
+
+    if (nichtGutGenug) {
+      return "Du beschreibst die Angst, nicht gut genug zu sein oder andere zu enttäuschen. Das klingt belastend.<br><br>" +
+        "<strong>Was befürchtest du, könnte passieren, wenn du die Erwartungen anderer einmal nicht erfüllst?</strong>";
+    }
+    if (leistungsdruck && leichtigkeit) {
+      return "Du spürst den Druck, ständig funktionieren zu müssen, und wünschst dir gleichzeitig mehr Leichtigkeit.<br><br>" +
+        "<strong>Was macht es dir gerade so schwer, dir selbst weniger abzuverlangen?</strong>";
+    }
+    if (vieleZiele && leistungsdruck) {
+      return "Du möchtest dich weiterentwickeln und hast viele Ideen. Gleichzeitig setzt du dich unter Druck, alles schaffen zu müssen.<br><br>" +
+        "<strong>Was belastet dich im Moment mehr: der Druck, alles zu schaffen, oder die Unsicherheit, womit du anfangen sollst?</strong>";
+    }
+    if (bisher > 1 && /angst|sorge|unsicher/.test(n)) {
+      return "Du sprichst von Angst oder Unsicherheit. Ich möchte nicht vorschnell interpretieren, was dahintersteckt.<br><br>" +
+        "<strong>Wovor hast du in dieser Situation am meisten Angst?</strong>";
+    }
+    return "";
+  },
 
   einstiegsAntwort(einstieg) {
 

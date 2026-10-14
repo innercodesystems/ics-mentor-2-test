@@ -110,6 +110,8 @@ window.ICS = window.ICS || {};
       erkenntnisse: [],
       hypothesen: [],
       offeneFragen: [],
+      dialogFragen: [],
+      dialogPhase: "zuhoeren",
       abgeschlossen: false,
       gespeichert: false
     };

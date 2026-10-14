@@ -77,6 +77,12 @@ ICS.Engine = {
     const erfolgsangst = /angst.{0,65}(nicht erfolgreich|zu versagen)|nicht erfolgreich genug|nie genug (zu tun|tun)|nicht genug (zu tun|tun)/.test(n);
     const erfolgSchonGenannt = /nicht erfolgreich genug|angst.{0,65}(nicht erfolgreich|zu versagen)/.test(vorher);
     const erfolgsMassstab = /erfolg|erfolgreich|ziele|erreichen/.test(verlauf);
+    const erfolgsDefinition = /finanziell frei|finanzielle freiheit|eigene ideen|ideen verwirklichen|zeit für mich|zeit fuer mich|selbstbestimm/.test(n);
+    const erfolgsKontext = /erfolgreich|erfolg|ziele|leistungsdruck|druck|alles schaffen/.test(verlauf);
+    if (erfolgsDefinition && erfolgsKontext) {
+      return "Du verbindest Erfolg mit Freiheit, Selbstbestimmung und Zeit für dich. Gleichzeitig hast du das Gefühl, immer mehr leisten zu müssen.<br><br>" +
+        "<strong>Was wäre für dich heute ein Zeichen von Erfolg, das nicht davon abhängt, wie viel du geschafft hast?</strong>";
+    }
 
     // Keine erneute Frage nach einer Angst, die bereits ausdrücklich benannt wurde.
     if (erfolgsangst || (erfolgSchonGenannt && /angst|unsicher|druck|erwartung/.test(n))) {

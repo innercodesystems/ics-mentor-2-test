@@ -43,27 +43,27 @@ function einstiegErkennen(text) {
     .toLowerCase()
     .trim();
 
-  if (n.includes("situation")) {
+  if (n === "situation") {
     return "situation";
   }
 
   if (
-    n.includes("gefuehl") ||
-    n.includes("gefühl")
+    n === "gefuehl" ||
+    n === "gefühl"
   ) {
     return "gefuehl";
   }
 
-  if (n.includes("beziehung")) {
+  if (n === "beziehung") {
     return "beziehung";
   }
 
-  if (n.includes("entscheidung")) {
+  if (n === "entscheidung") {
     return "entscheidung";
   }
 
   if (
-    n.includes("wiederkehrendes verhalten") ||
+    n === "wiederkehrendes verhalten" ||
     n === "verhalten"
   ) {
     return "verhalten";

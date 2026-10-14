@@ -327,3 +327,29 @@ button:hover{
 .ics-memory-actions button:first-child{background:#c8a45d;color:#1c1c1c}
 #ics-memory-status{font-size:13px;margin-top:12px;margin-bottom:0}
 @media(max-width:600px){.ics-memory-settings{padding:16px}.ics-memory-actions button{width:100%}}
+
+/* Conversation-first test layout */
+.mentor-page{padding-top:32px}
+.mentor-header{margin-bottom:24px}
+.mentor-header h1{font-size:clamp(28px,5vw,42px);margin-bottom:12px}
+.mentor-intro{line-height:1.5}
+.mentor-card{display:flex;flex-direction:column;gap:18px}
+.mentor-input-area{order:0;margin:0}
+.mentor-chat{order:1;min-height:170px;max-height:520px;margin:0}
+.typing-indicator{order:2}
+.mentor-options{margin-top:18px;background:#fff;border:1px solid #e6d8b9;border-radius:18px;overflow:hidden}
+.mentor-options summary{padding:18px 20px;cursor:pointer;font-weight:600;color:#1c1c1c}
+.mentor-options summary:focus-visible{outline:3px solid #c8a45d;outline-offset:-3px}
+.mentor-options-content{padding:0 20px 20px}
+.mentor-options .mentor-status{flex-wrap:wrap}
+.mentor-options .ics-memory-settings{margin-bottom:0}
+@media(max-width:650px){
+.mentor-page{padding-top:22px}
+.mentor-header{margin-bottom:20px}
+.mentor-logo{font-size:30px;margin-bottom:6px}
+.mentor-label{letter-spacing:2px;margin-bottom:9px}
+.mentor-header h1{font-size:30px}
+.mentor-card{padding:18px}
+.mentor-chat{min-height:150px;padding:14px}
+.mentor-options-content{padding:0 12px 12px}
+}

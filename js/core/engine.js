@@ -64,30 +64,44 @@ ICS.Engine = {
 
   kontextAntwort(text, gespraech) {
     const n = String(text || "").toLowerCase();
-    const bisher = Array.isArray(gespraech && gespraech.antworten)
-      ? gespraech.antworten.length : 0;
+    const antworten = Array.isArray(gespraech && gespraech.antworten)
+      ? gespraech.antworten : [];
+    // Die aktuelle Nachricht steht beim Aufruf bereits in antworten.
+    const vorher = antworten.slice(0, -1).join(" ").toLowerCase();
+    const verlauf = vorher + " " + n;
 
-    // Nur auf tatsächlich geäußerte Inhalte eingehen, keine Diagnose behaupten.
     const nichtGutGenug = /nicht gut genug|nicht genug (sein|bin)|andere (zu )?enttäusch/.test(n);
     const leistungsdruck = /druck|funktionieren|alles schaffen|leisten/.test(n);
     const leichtigkeit = /leichtigkeit|ruhe|entlastung/.test(n);
     const vieleZiele = /viele ideen|große ziele|wo ich anfangen/.test(n);
+    const erfolgsangst = /angst.{0,65}(nicht erfolgreich|zu versagen)|nicht erfolgreich genug|nie genug (zu tun|tun)|nicht genug (zu tun|tun)/.test(n);
+    const erfolgSchonGenannt = /nicht erfolgreich genug|angst.{0,65}(nicht erfolgreich|zu versagen)/.test(vorher);
+    const erfolgsMassstab = /erfolg|erfolgreich|ziele|erreichen/.test(verlauf);
 
+    // Keine erneute Frage nach einer Angst, die bereits ausdrücklich benannt wurde.
+    if (erfolgsangst || (erfolgSchonGenannt && /angst|unsicher|druck|erwartung/.test(n))) {
+      return "Du möchtest viel erreichen und hast zugleich das Gefühl, dass deine Anstrengungen nie ausreichen.<br><br>" +
+        "<strong>Woran würdest du für dich selbst erkennen, dass du erfolgreich genug bist – unabhängig davon, was andere erwarten?</strong>";
+    }
     if (nichtGutGenug) {
-      return "Du beschreibst die Angst, nicht gut genug zu sein oder andere zu enttäuschen. Das klingt belastend.<br><br>" +
-        "<strong>Was befürchtest du, könnte passieren, wenn du die Erwartungen anderer einmal nicht erfüllst?</strong>";
+      return "Du beschreibst die Sorge, nicht gut genug zu sein oder andere zu enttäuschen.<br><br>" +
+        "<strong>Was würde sich für dich verändern, wenn du nicht immer alle Erwartungen erfüllen müsstest?</strong>";
+    }
+    if (vieleZiele && leistungsdruck) {
+      return "Du hast viele Ideen und große Ziele. Gleichzeitig setzt du dich unter Druck, alles schaffen zu müssen.<br><br>" +
+        "<strong>Was belastet dich im Moment mehr: der Druck, alles zu schaffen, oder die Unsicherheit, womit du anfangen sollst?</strong>";
     }
     if (leistungsdruck && leichtigkeit) {
       return "Du spürst den Druck, ständig funktionieren zu müssen, und wünschst dir gleichzeitig mehr Leichtigkeit.<br><br>" +
         "<strong>Was macht es dir gerade so schwer, dir selbst weniger abzuverlangen?</strong>";
     }
-    if (vieleZiele && leistungsdruck) {
-      return "Du möchtest dich weiterentwickeln und hast viele Ideen. Gleichzeitig setzt du dich unter Druck, alles schaffen zu müssen.<br><br>" +
-        "<strong>Was belastet dich im Moment mehr: der Druck, alles zu schaffen, oder die Unsicherheit, womit du anfangen sollst?</strong>";
+    if (/angst|sorge|unsicher/.test(n) && erfolgsMassstab) {
+      return "Du verbindest deine Sorge mit dem Wunsch, etwas zu erreichen.<br><br>" +
+        "<strong>Was bedeutet Erfolg für dich persönlich?</strong>";
     }
-    if (bisher > 1 && /angst|sorge|unsicher/.test(n)) {
-      return "Du sprichst von Angst oder Unsicherheit. Ich möchte nicht vorschnell interpretieren, was dahintersteckt.<br><br>" +
-        "<strong>Wovor hast du in dieser Situation am meisten Angst?</strong>";
+    if (antworten.length > 1 && /angst|sorge|unsicher/.test(n)) {
+      return "Du sprichst von einer Sorge, die dich beschäftigt.<br><br>" +
+        "<strong>Was würde dir helfen, damit im Moment etwas leichter umzugehen?</strong>";
     }
     return "";
   },

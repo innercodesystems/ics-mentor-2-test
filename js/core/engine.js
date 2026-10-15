@@ -126,6 +126,18 @@ ICS.Engine = {
     const vorher = antworten.slice(0, -1).join(" ").toLowerCase();
     const verlauf = vorher + " " + n;
 
+    // V8: Bereits selbst formulierte konkrete Handlung hat Vorrang vor
+    // allgemeinen Zufriedenheits- und Erfolgsmustern.
+    const eigeneZeit = /zwei stunden|2 stunden|stunden (nur )?für mich|zeit (nur )?für mich/.test(n);
+    const aktivitaet = /spazieren|spaziergang|an den see|am see|hinsetzen|setzen|ruhe gönnen/.test(n);
+    const eigeneEntscheidung = /mir (bewusst )?erlaube|ich (werde|nehme mir|möchte|will)|mir würde helfen|ich könnte/.test(n);
+    if (eigeneZeit && aktivitaet && eigeneEntscheidung) {
+      if (gespraech) gespraech.dialogPhase = "handlung";
+      return "Du hast bereits eine konkrete Möglichkeit gefunden: Zeit nur für dich, vielleicht bei einem Spaziergang oder am See.<br><br>" +
+        "Das könnte ein erster Schritt sein, Erholung nicht länger als verlorene Zeit zu betrachten.<br><br>" +
+        "<strong>Möchtest du diese Zeit heute bewusst für dich reservieren?</strong>";
+    }
+
     // Erholung + schlechtes Gewissen ist nicht automatisch ein Schuldmuster.
     const erholung = /nachmittag|nichts (zu )?tun|pause|ausruh|erhol|frei(e|en|er)? zeit/.test(n);
     const produktivitaetsGewissen = /schlechtes gewissen|zeit verschwende|unproduktiv|nicht produktiv/.test(n);

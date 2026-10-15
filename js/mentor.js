@@ -292,6 +292,33 @@ window.ICS = window.ICS || {};
     );
   }
   
+  function erinnerungPruefen(text) {
+    const c = ICS.mentorConsent;
+    if (!c || !c.allows("insights")) return "";
+    const notizen = c.notes();
+    const n = normalisieren(text).trim();
+    if (gespraech.offeneErinnerung) {
+      const id = gespraech.offeneErinnerung;
+      gespraech.offeneErinnerung = null;
+      if (["ja", "ja bitte", "gerne", "ok"].includes(n)) {
+        const eintrag = notizen.find(x => x.id === id);
+        return eintrag ? "Deine frühere Erkenntnis: " + escapen(eintrag.text) +
+          "<br><br>Was bedeutet sie heute für dich?" : "";
+      }
+      if (["nein", "nein danke", "nicht jetzt"].includes(n)) {
+        return "In Ordnung. Wir bleiben beim aktuellen Thema.";
+      }
+    }
+    if (gespraech.erinnerungGefragt || n.length < 25) return "";
+    const tokens = value => normalisieren(value).match(/[a-z]{6,}/g) || [];
+    const aktuell = new Set(tokens(text));
+    const passend = notizen.find(x => tokens(x.text).filter(w => aktuell.has(w)).length >= 2);
+    if (!passend) return "";
+    gespraech.erinnerungGefragt = true;
+    gespraech.offeneErinnerung = passend.id;
+    return "Eine frühere Erkenntnis könnte dazu passen. Möchtest du daran anknüpfen? Antworte mit Ja oder Nein.";
+  }
+
   function antwortErzeugen(text) {
     const erinnerung = erinnerungPruefen(text);
     if (erinnerung) return erinnerung;

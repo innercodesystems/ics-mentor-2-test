@@ -293,6 +293,8 @@ window.ICS = window.ICS || {};
   }
   
   function antwortErzeugen(text) {
+    const erinnerung = erinnerungPruefen(text);
+    if (erinnerung) return erinnerung;
     if (istAuswertungsWunsch(text)) {
       gespraech.abgeschlossen = true;
       gespraechSpeichern();

@@ -310,9 +310,23 @@ window.ICS = window.ICS || {};
       }
     }
     if (gespraech.erinnerungGefragt || n.length < 25) return "";
-    const tokens = value => normalisieren(value).match(/[a-z]{6,}/g) || [];
-    const aktuell = new Set(tokens(text));
-    const passend = notizen.find(x => tokens(x.text).filter(w => aktuell.has(w)).length >= 2);
+    const themen = [
+      ["erfolg", "erfolgreich", "ziele", "leisten", "leistung"],
+      ["erholung", "erholen", "ruhe", "auszeit", "pause", "entspannen"],
+      ["zeit fuer mich", "zeit für mich", "freiraum", "selbstbestimmung"],
+      ["druck", "muessen", "müssen", "schlechtes gewissen"]
+    ];
+    const begriffe = value => {
+      const n = normalisieren(value);
+      return new Set(themen.map((gruppe, index) =>
+        gruppe.some(w => n.includes(normalisieren(w))) ? index : -1
+      ).filter(index => index >= 0));
+    };
+    const aktuell = begriffe(text);
+    const passend = notizen.find(x => {
+      const gespeichert = begriffe(x.text);
+      return [...aktuell].some(index => gespeichert.has(index));
+    });
     if (!passend) return "";
     gespraech.erinnerungGefragt = true;
     gespraech.offeneErinnerung = passend.id;

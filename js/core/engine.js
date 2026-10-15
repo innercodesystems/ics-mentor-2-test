@@ -126,6 +126,23 @@ ICS.Engine = {
     const vorher = antworten.slice(0, -1).join(" ").toLowerCase();
     const verlauf = vorher + " " + n;
 
+    // V9: Eine verbindlich formulierte Entscheidung ist keine offene Ideenfindung.
+    const entschlossen = /ich entscheide mich|ich habe mich entschieden|ich werde|ich nehme mir|ich mache das|ich setze das um/.test(n);
+    const konkret = /heute|morgen|nachmittag|abend|uhr|stunden|spazieren|see|handy|termin|kalender/.test(n);
+    if (entschlossen && konkret) {
+      if (gespraech) gespraech.dialogPhase = "abschluss";
+      const zeit = /zwei stunden|2 stunden/.test(n) ? "zwei Stunden " : "";
+      const see = /(?:an den|am) see/.test(n);
+      const handy = /handy/.test(n) && /weglegen|weg|aus|nicht/.test(n);
+      const tat = see ? "an den See zu gehen" : "deinen gewählten Schritt umzusetzen";
+      const detail = handy ? " und dein Handy bewusst wegzulegen" : "";
+      return "Du hast eine konkrete Entscheidung getroffen: " +
+        (/(?:heute)/.test(n) ? "Heute " : "") +
+        "nimmst du dir " + zeit + "Zeit für dich, um " + tat + detail + ".<br><br>" +
+        "Du musst daraus keine weitere Aufgabe machen. Es darf bei dieser Entscheidung bleiben.<br><br>" +
+        "<strong>Wenn du möchtest, können wir später gemeinsam anschauen, wie es sich für dich angefühlt hat.</strong>";
+    }
+
     // V8: Bereits selbst formulierte konkrete Handlung hat Vorrang vor
     // allgemeinen Zufriedenheits- und Erfolgsmustern.
     const eigeneZeit = /zwei stunden|2 stunden|stunden (nur )?für mich|zeit (nur )?für mich/.test(n);
